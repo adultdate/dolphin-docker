@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+  dolphin:
+    build: .
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      VIRTUAL_HOST: localhost
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: dolphin_root_password
+      MYSQL_DATABASE: dolphin
+      MYSQL_USER: dolphin_user
+      MYSQL_PASSWORD: dolphin_password
