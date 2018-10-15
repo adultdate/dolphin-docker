@@ -5,13 +5,17 @@ services:
     build: .
     restart: always
     ports:
-      - 8080:80
+      - 8081:80
     environment:
       VIRTUAL_HOST: localhost
+    depends_on:
+      - db
 
-  mysql:
+  db:
     image: mysql:5.7
     restart: always
+    ports:
+      - 5506:3306
     environment:
       MYSQL_ROOT_PASSWORD: dolphin_root_password
       MYSQL_DATABASE: dolphin
