@@ -87,6 +87,4 @@ RUN chown dolphin:dolphin /var/www/crontab \
  
 # Expose port
  
-VOLUME /var/www
-
-EXPOSE 80
+EXPOSE 8081
