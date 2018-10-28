@@ -8,8 +8,6 @@ services:
       - 8081:80
     environment:
       VIRTUAL_HOST: localhost
-    volumes:
-      - ./html:/var/www/html
     depends_on:
       - db
 
