@@ -79,8 +79,18 @@ CustomLog /var/www/access.log combined \n\
 </VirtualHost>" > /etc/apache2/sites-enabled/dolphin.conf
  
 RUN a2enmod rewrite expires
- 
-RUN echo "* * * * * cd /var/www/html/periodic; /usr/local/bin/php -q cron.php" > /var/www/crontab
+
+RUN pecl install xdebug-2.5.5 && docker-php-ext-enable xdebug \
+    && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" >> /var/www/php.ini \
+    && echo "xdebug.remote_port=9000" >> /var/www/php.ini \
+    && echo "xdebug.remote_enable=1" >> /var/www/php.ini \
+    && echo "xdebug.remote_connect_back=0" >> /var/www/php.ini \
+    && echo "xdebug.remote_host=docker.for.mac.localhost" >> /var/www/php.ini \
+    && echo "xdebug.idekey=IDEA_DEBUG" >> /var/www/php.ini \
+    && echo "xdebug.remote_autostart=1" >> /var/www/php.ini \
+    && echo "xdebug.remote_log=/tmp/xdebug.log" >> /var/www/php.ini
+
+RUN echo "*       *       *       *       *       root    cd /var/www/html/periodic; /usr/local/bin/php -q cron.php" >> /etc/cron.d/dolphincron
  
 RUN chown dolphin:dolphin /var/www/crontab \
 && crontab -u dolphin /var/www/crontab
